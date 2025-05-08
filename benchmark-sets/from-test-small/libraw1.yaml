@@ -1,7 +1,7 @@
 "is_test_benchmark": !!bool "true"
 "language": "c++"
-"project": "libaom"
+"project": "libraw"
 "target_name": "libraw_fuzzer"
-"target_path": "oss-fuzz/projects/libraw/libraw_fuzzer.cc"
+"target_path": "/src/libraw_fuzzer.cc"
 "test_files":
-- "test_file_path": "/media/fengxiao/3d47419b-aaf4-418e-8ddd-4f2c62bebd8b/workSpace/new/oss-fuzz-gen-ut/test_parsing/libaom/trace_file/function_deps/AVX2_AV1SelfguidedFilterTest_CorrectnessTest_ALL.cpp"
+- "test_file_path": "//src/libraw/samples/dcraw_half.c"

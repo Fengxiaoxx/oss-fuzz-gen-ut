@@ -600,7 +600,7 @@ class BuilderRunner:
     with open(log_path, 'w+') as log_file:
       try:
         sp.run(command,
-               cwd=oss_fuzz_checkout.OSS_FUZZ_DIR,
+               #cwd=oss_fuzz_checkout.OSS_FUZZ_DIR,
                stdin=sp.DEVNULL,
                stdout=log_file,
                stderr=sp.STDOUT,
@@ -1100,5 +1100,5 @@ def get_build_artifact_dir(generated_project: str, build_artifact: str) -> str:
   """
   Returns the |build_artifact| absolute directory path for |generated_project|.
   """
-  return os.path.join(oss_fuzz_checkout.OSS_FUZZ_DIR, 'build', build_artifact,
-                      generated_project)
+  return os.path.abspath(os.path.join(oss_fuzz_checkout.OSS_FUZZ_DIR, 'build', build_artifact,
+                      generated_project))

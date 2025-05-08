@@ -16,3 +16,8 @@ test_parsing/
 target_lib/
 output.txt
 function.txt
+benchmark-sets/from-test-small/libraw1.yaml
+benchmark-sets/all/tinyxml1.yaml
+benchmark-sets/from-test-small/libaom.yaml
+benchmark-sets/from-test-small/libraw1.yaml
+benchmark-sets/from-test-small/libraw1.yaml

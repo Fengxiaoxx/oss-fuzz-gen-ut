@@ -334,30 +334,30 @@ def rewrite_project_to_cached_project(project_name: str, generated_project: str,
   with open(original_dockerfile, 'r') as f:
     docker_content = f.read()
 
-  arg_line = 'ARG CACHE_IMAGE=' + cached_image_name
-  docker_content = arg_line + '\n' + docker_content
-  docker_content = re.sub(r'FROM gcr.io/oss-fuzz-base/base-builder.*',
-                          'FROM $CACHE_IMAGE', docker_content)
-
-  # Now comment out everything except:
-  # - The first FROM.
-  # - The ARG we just added.
-  # - The last 2 COPY commands (for the build script and the target we added).
-  arg_line = -1
-  from_line = -1
+  # First find the lines we want to keep
+  arg_line_idx = -1
+  from_line_idx = -1
   copy_fuzzer_line = -1
   copy_build_line = -1
 
   for line_idx, line in enumerate(docker_content.split('\n')):
-    if line.startswith('ARG') and arg_line == -1:
-      arg_line = line_idx
-    if line.startswith('FROM') and from_line == -1:
-      from_line = line_idx
+    if line.startswith('ARG') and arg_line_idx == -1:
+      arg_line_idx = line_idx
+    if line.startswith('FROM') and from_line_idx == -1:
+      from_line_idx = line_idx
     if line.startswith('COPY'):
       copy_fuzzer_line = copy_build_line
       copy_build_line = line_idx
 
-  lines_to_keep = {arg_line, from_line, copy_fuzzer_line, copy_build_line}
+  # Now add the ARG line and replace the FROM line
+  new_arg_line = 'ARG CACHE_IMAGE=' + cached_image_name
+  docker_content = new_arg_line + '\n' + docker_content
+  docker_content = re.sub(r'FROM gcr.io/oss-fuzz-base/base-builder.*',
+                          'FROM $CACHE_IMAGE', docker_content)
+
+  # Now comment out everything except the lines we want to keep
+  # Note: arg_line_idx is now offset by 1 due to the new ARG line we added
+  lines_to_keep = {0, from_line_idx + 1, copy_fuzzer_line + 1, copy_build_line + 1}
   new_content = ''
   for line_idx, line in enumerate(docker_content.split('\n')):
     if line_idx not in lines_to_keep:
@@ -440,7 +440,6 @@ def prepare_project_image(benchmark: benchmarklib.Benchmark) -> str:
   """Prepares original image of the |project|'s fuzz target build container."""
   project = benchmark.project
   image_name = f'gcr.io/oss-fuzz/{project}'
-  logger.info('We should use cached instance.')
   generated_oss_fuzz_project = f'{benchmark.id}-{uuid.uuid4().hex}'
   generated_oss_fuzz_project = rectify_docker_tag(generated_oss_fuzz_project)
   create_ossfuzz_project(benchmark, generated_oss_fuzz_project)
@@ -448,6 +447,7 @@ def prepare_project_image(benchmark: benchmarklib.Benchmark) -> str:
   if not ENABLE_CACHING:
     logger.warning('Disabled caching when building image for %s', project)
   elif is_image_cached(project, 'address'):
+    logger.info('Will use cached instance.')
     # Rewrite for caching.
     rewrite_project_to_cached_project(project, generated_oss_fuzz_project,
                                       'address')

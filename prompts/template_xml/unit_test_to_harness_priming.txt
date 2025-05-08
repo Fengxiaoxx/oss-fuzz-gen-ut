@@ -30,7 +30,7 @@ The target project is written in the {PROG_LANG} programming language.
 
 11. Add appropriate bounds checking before accessing arrays or performing pointer arithmetic.
 
-The following is the sequence of APIs that you must call in the fuzz driver.
+Each function in the following API function sequence must be called in the generated fuzz driver.
 
 {API_SEQUENCE}
 

@@ -2050,6 +2050,9 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {}
     documentation_list = []
     for api in api_sequence:
       documentation = function_definitions.get(api, '')
+      if isinstance(documentation, dict):
+        # 如果documentation是字典，将其转换为字符串
+        documentation = str(documentation)
       documentation_list.append(documentation)
     documentation_str = '\n'.join(doc for doc in documentation_list if doc)
 
