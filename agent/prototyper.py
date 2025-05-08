@@ -39,7 +39,7 @@ class Prototyper(BaseAgent):
   def _initial_prompt(self, results: list[Result]) -> Prompt:
     """Constructs initial prompt of the agent."""
     benchmark = results[-1].benchmark
-
+    '''
     if benchmark.use_project_examples:
       project_examples = project_targets.generate_data(
           benchmark.project,
@@ -47,13 +47,16 @@ class Prototyper(BaseAgent):
           cloud_experiment_bucket=self.args.cloud_experiment_bucket)
     else:
       project_examples = []
-
+      '''
+    project_examples = []
+    '''
     if self.args.context:
       retriever = ContextRetriever(benchmark)
       context_info = retriever.get_context_info()
     else:
       context_info = {}
-
+    '''
+    context_info = {}
     builder = prompt_builder.PrototyperTemplateBuilder(
         model=self.llm,
         benchmark=benchmark,

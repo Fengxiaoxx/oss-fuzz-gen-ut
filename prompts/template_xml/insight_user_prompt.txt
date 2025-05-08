@@ -1,0 +1,22 @@
+<user>
+<function_code>
+{signature}
+{definition}
+</function_code>
+</user>
+
+<output_format>
+{
+"function": "One‑sentence purpose summary",
+"parameters": {
+"param1": "Description; direction",
+"param2": "Description; direction"
+// List all parameters in order of appearance
+},
+"return": "Meaning of the return value (or 'void')",
+"constraints": [
+"Constraint A (leave array empty if none)",
+"Constraint B"
+]
+}
+</output_format>

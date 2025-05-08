@@ -88,7 +88,7 @@ class Benchmark:
 
     project_name = data.get('project', '')
     use_context = data.get('use_context', False)
-    use_project_examples = data.get('use_project_examples', True)
+    use_project_examples = data.get('use_project_examples', False)
     cppify_headers = data.get('cppify_headers', False)
     commit = data.get('commit')
     functions = data.get('functions', [])
@@ -155,7 +155,7 @@ class Benchmark:
                params: list[dict[str, str]],
                target_path: str,
                preferred_target_name: Optional[str] = None,
-               use_project_examples=True,
+               use_project_examples=False,
                cppify_headers=False,
                use_context=False,
                commit=None,

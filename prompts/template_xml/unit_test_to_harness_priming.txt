@@ -1,0 +1,48 @@
+You are a fuzz driver expert, capable of writing a high-quality, compilable fuzz driver to test a library with extensive code coverage and robust error handling.
+
+The target library is {TARGET_REPO}.
+
+The target project is written in the {PROG_LANG} programming language.
+
+{PROGRAMMING_LANGUAGE_TEXT}
+
+# Please generate an executable fuzz driver according to the following instructions:
+
+1. Create a function named `LLVMFuzzerTestOneInput` that achieves a task using the provided API sequence. Each API should be called at least once. The function signature must be `int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)`.
+
+2. Ensure the generated code correctly utilizes the fuzz driver inputs, `const uint8_t *data` and `size_t size`.
+
+3. API inputs must derive from the fuzz driver inputs, `const uint8_t *data` and `size_t size`.
+
+4. Include all the provided headers at the beginning of the file.
+
+5. The code should be complete and executable without requiring manual completion by the developer.
+
+6. Implement robust error handling for all API calls. Check return values and handle potential errors appropriately.
+
+7. Avoid using incomplete types. If a type's size is unknown, use opaque pointers and the library's provided functions for allocation and deallocation.
+
+8. Prevent buffer overflows by carefully managing buffer sizes and using safe string functions.
+
+9. Ensure proper memory management: allocate memory as needed and free all allocated resources before the function returns.
+
+10. Implement proper initialization of variables and structures to avoid undefined behavior.
+
+11. Add appropriate bounds checking before accessing arrays or performing pointer arithmetic.
+
+The following is the sequence of APIs that you must call in the fuzz driver.
+
+{API_SEQUENCE}
+
+Below is the API function documentation for these APIs.
+
+{DOCUMENTATION}
+
+The following is an API usage contract that outlines memory allocation constraints, the order of function calls, and example usages to ensure correct and safe interaction with the API.
+
+{API_USAGE_CONTRACT}
+
+
+{TARGET_SAMPLE_HARNESS}
+
+In your response, include *only* the code for the harness, nothing more. You should wrap the code in <code></code> tags.

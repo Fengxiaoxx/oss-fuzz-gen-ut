@@ -1,0 +1,48 @@
+<user>
+<unit_test_code>
+<code>
+{unit_test_code}
+</code>
+</unit_test_code>
+
+<api_used>
+{api_used}
+<!-- Example: FileStorage.open, FileStorage.write, FileStorage.close -->
+</api_used>
+</user>
+
+<output_format>
+<json>
+{
+  "constraints": [
+    {
+      "from": "{API_A}",
+      "to": "{API_B}",
+      "type": "out-to-in | fixed | relative",
+      "variable": "{shared_variable_name}",
+      "evidence": "{evidence_line_or_expression}"
+    }
+    // Repeat for every discovered relationship
+  ],
+  "workflow": [
+    "1. Call {API_X}(…) → returns {obj}; keep for step 4",
+    "2. Call {API_Y}(same {obj}, …) // fixed constraint",
+    "3. …"
+  ],
+  "examples": {
+    "{API_A}": {
+      "usage": "# Prepare inputs\nfile_path = '/data/report.txt'\nmode = 'r'\n\n# Invoke API\nfile_handle = FileStorage.open(file_path, mode)\n\n# Work with the result\ncontent = file_handle.read()\nfile_handle.close()"
+    },
+    "{API_B}": {
+      "usage": "# Gather prerequisites\nauth_token = login(username, password)\npayload = {'name': 'example', 'value': 42}\n\n# Invoke API\nresponse = ApiClient.post('/v1/items', json=payload, headers={'Authorization': auth_token})\n\n# Handle response\nif response.status_code == 201:\n    item_id = response.json()['id']\n    print(f'Created item {item_id}')"
+    }
+    // One entry per API in <api_used>
+  }
+}
+</json>
+</output_format>
+
+<notes>
+* Think step‑by‑step *internally*, but reveal **only** the JSON above.  
+* If no constraints are found, return `"constraints": []`, but still include the `workflow` and `examples` sections for the relevant APIs.
+</notes>

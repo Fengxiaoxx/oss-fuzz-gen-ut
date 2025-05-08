@@ -41,6 +41,10 @@ class OnePromptPrototyper(BaseAgent):
     """Returns the prompt builder based on language and customization."""
     last_result = results[-1]
     benchmark = last_result.benchmark
+
+    if self.args.prompt_builder == 'UnitTestToHarness':
+      return prompt_builder.UnitTestToHarnessConverter(self.llm, benchmark,
+                                                       self.args.template_directory)
     # If this is a test benchmark then we will use a test prompt builder.
     if benchmark.test_file_path:
       logger.info('Generating a target for test case: %s',
@@ -73,7 +77,6 @@ class OnePromptPrototyper(BaseAgent):
     """Constructs initial prompt of the agent."""
     last_result = results[-1]
     benchmark = last_result.benchmark
-
     if benchmark.use_project_examples:
       project_examples = project_targets.generate_data(
           benchmark.project,
